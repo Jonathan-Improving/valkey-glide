@@ -27,6 +27,7 @@ import glide.api.models.configuration.StandaloneSubscriptionConfiguration;
 import glide.api.models.exceptions.ClosingException;
 import glide.api.models.exceptions.GlideException;
 import glide.internal.AsyncRegistry;
+import glide.internal.ClientLibraryNameResolver;
 import glide.internal.GlideNativeBridge;
 import java.util.Map;
 import java.util.Set;
@@ -339,7 +340,9 @@ public class ConnectionManager {
                         if (configuration.getClientName() != null) {
                             requestBuilder.setClientName(configuration.getClientName());
                         }
-                        requestBuilder.setLibName(composeLibName(configuration));
+                        requestBuilder.setLibName(
+                                ClientLibraryNameResolver.resolve(
+                                        configuration.getLibName(), configuration.getClientInfoTag()));
                         requestBuilder.setLazyConnect(configuration.isLazyConnect());
 
                         // Set database ID
